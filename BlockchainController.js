@@ -17,6 +17,8 @@ class BlockchainController {
         this.getBlockByHash();
         this.getStarsByOwner();
         this.verifyChainIntegrity();
+        this.testAddBlocks();
+        this.chain();
     }
 
 
@@ -134,6 +136,32 @@ class BlockchainController {
             } else {
                 return res.status(500).send("Block Not Found! Review the Parameters!");
             }
+            
+        });
+    }
+    testAddBlocks() {
+        this.app.get("/testAddBlocks", async (req, res) => {
+            
+                try {
+                   let added = await this.blockchain.testBlocks();
+                   return res.status(500).json(added);
+                } catch (error) {
+                    return res.status(500).send("An error happened!");
+                }
+             
+            
+        });
+    }
+    chain() {
+        this.app.get("/chain", async (req, res) => {
+            
+                try {
+                   let chain = await this.blockchain.chainPrint();
+                   return res.status(500).json(chain);
+                } catch (error) {
+                    return res.status(500).send("An error happened!");
+                }
+             
             
         });
     }

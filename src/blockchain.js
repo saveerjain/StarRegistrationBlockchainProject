@@ -85,13 +85,11 @@ class Blockchain {
                 block.time = new Date().getTime().toString().slice(0,-3);
                 block.hash = SHA256(JSON.stringify(block)).toString();
                 
-                console.log("Height : "+ height);
                 this.height=self.chain.length;
 
                 this.chain.push(block);
 
                 
-                console.log(block);
                 resolve(block);
             }
         
@@ -205,8 +203,7 @@ class Blockchain {
              //let obj = (self.chain[i].getBData());
 
              let obj = JSON.parse(hex2ascii(self.chain[i].body));
-             console.log(obj);
-             console.log(obj.owner);
+             
              let bAdd = (obj.owner);
              
             
@@ -234,7 +231,7 @@ class Blockchain {
         let errorLog = [];
         return new Promise(async (resolve, reject) => {
             for (let i = 1; i < self.chain.length; i++) {
-                let validated = await self.chain[i].validateBlock;
+                let validated = await self.chain[i].validateBlock();
                 if (validated == false || self.chain[i].previousBlockHash!=self.chain[i-1].hash){
                     errorLog.push(self.chain[i]);
                 }
@@ -242,6 +239,19 @@ class Blockchain {
         resolve(errorLog);
 
         });
+    }
+
+    testBlocks(){
+        let star = {"info":"this star exists"};
+        let star2 = {"info":"this star also exists"};
+        let block = new BlockClass.Block({ "owner": "saveer", star });
+        this._addBlock(block);
+        let block2 = new BlockClass.Block({ "owner": "saveer", star2 });
+        this._addBlock(block2);
+        return([block,block2]);
+    }
+    chainPrint(){
+        return(this.chain);
     }
 
 }
