@@ -16,9 +16,30 @@ class BlockchainController {
         this.submitStar();
         this.getBlockByHash();
         this.getStarsByOwner();
+        this.verifyChainIntegrity();
     }
 
+
+    // Enpoint to validate chain (GET Endpoint)
+    verifyChainIntegrity() {
+        this.app.get("/verifyChainIntegrity", async (req, res) => {
+            try {
+                let errorsLog = await this.blockchain.validateChain();
+                if(errorsLog) {
+                    return res.status(200).json(errorsLog);
+                } else {
+                    return res.status(200).send("No errors in the chain");
+                }
+            } catch (error) {
+                return res.status(500).send("Something went wrong");
+            }
+
+        });
+    }
+
+
     // Enpoint to Get a Block by Height (GET Endpoint)
+
     getBlockByHeight() {
         this.app.get("/block/height/:height", async (req, res) => {
             if(req.params.height) {

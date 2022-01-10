@@ -210,7 +210,7 @@ class Blockchain {
          }else{
              resolve();
          }
-        });
+        });s
     }
 
     /**
@@ -223,21 +223,17 @@ class Blockchain {
         let self = this;
         let errorLog = [];
         return new Promise(async (resolve, reject) => {
-        for(let i=0;i<self.chain.length;i++){
-        if(looper = true){
-         okay=self.chain[i].validate()
-         if(i>0&&self.chain[i].hash!=self.chain[i-1].previousBlockHash){
-         looper = false; 
-         reject("Broken Chain");   
-         }
-         if(okay == false){
-            errorLog.push(self.chain[i]);
-
-         }
-        }   
+            for (let i = 1; i < self.chain.length; i++) {
+                if (self.chain[i].validateBlock == false || self.chain[i].previousBlockHash!=self.chain[i-1].hash){
+                    errorLog.push(self.chain[i]);
+                }
+            }
+    if(errorLog.length > 0) {
+        resolve(errorLog);
+    }else {
+        resolve();
     }
 
-        resolve(errorLog);
         });
     }
 
