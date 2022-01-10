@@ -22,7 +22,7 @@ class BlockchainController {
 
     // Enpoint to validate chain (GET Endpoint)
     verifyChainIntegrity() {
-        this.app.get("/verifyChainIntegrity", async (req, res) => {
+        this.app.get("/validateChain", async (req, res) => {
             try {
                 let errorsLog = await this.blockchain.validateChain();
                 if(errorsLog) {
