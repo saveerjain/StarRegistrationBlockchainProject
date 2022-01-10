@@ -9,6 +9,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const log = require('debug')('http'); // instead of `http` you can add any arbitrary identifier.
+
 /**
  * Require the Blockchain class. This allow us to have only one instance of the class.
  */
@@ -49,7 +51,10 @@ class ApplicationServer {
 	start() {
 		let self = this;
 		this.app.listen(this.app.get("port"), () => {
-			console.log(`Server Listening for port: ${self.app.get("port")}`);
+			
+    	log('server started');
+    	console.log(`Server Listening for port: ${self.app.get("port")}`);
+		
 			
 		});
 	}
